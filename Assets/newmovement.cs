@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/*
 namespace Platformer
 {
-    public class AnimationMovementController: MonoBehaviour
+    public class newmovement : MonoBehaviour
     {
         PlayerInput playerInput;
         CharacterController characterController;
@@ -34,6 +33,8 @@ namespace Platformer
         float maxJumpTime = 3.75f;
         bool isJumping = false;
 
+        private Camera mainCamera; // Reference to the main camera
+
         void Awake()
         {
             playerInput = new PlayerInput();
@@ -52,9 +53,10 @@ namespace Platformer
             playerInput.CharacterControls.Jump.canceled += onJump;
 
             setupJumpVariables();
-
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            mainCamera = Camera.main; // Assign the main camera reference
         }
 
         void setupJumpVariables()
@@ -66,71 +68,81 @@ namespace Platformer
 
         void handleJump()
         {
-            if (!isJumping && characterController.isGrounded && isJumpPressed) {
+            if (!isJumping && characterController.isGrounded && isJumpPressed)
+            {
                 isJumping = true;
                 currentMovement.y = initialJumpVelocity * .5f;
-                currentRunMovement.y = initialJumpVelocity * .5f; 
-            } else if (!isJumpPressed && isJumping && characterController.isGrounded) {
+                currentRunMovement.y = initialJumpVelocity * .5f;
+            }
+            else if (!isJumpPressed && isJumping && characterController.isGrounded)
+            {
                 isJumping = false;
             }
         }
 
-        void onJump (InputAction.CallbackContext context)
+        void onJump(InputAction.CallbackContext context)
         {
             isJumpPressed = context.ReadValueAsButton();
         }
-            
-        void onRun (InputAction.CallbackContext context)
+
+        void onRun(InputAction.CallbackContext context)
         {
             isRunPressed = context.ReadValueAsButton();
         }
-   
-       
+
         void handleRotation()
         {
-            Vector3 positionToLookAt;
-            // changes in position character should point to
-            positionToLookAt.x = currentMovement.x;
-            positionToLookAt.y = zero;
-            positionToLookAt.z = currentMovement.z;
+            // Calculate the movement direction relative to the camera's forward direction
+            Vector3 cameraForward = mainCamera.transform.forward;
+            cameraForward.y = 0f; // Ensure it's horizontal
+            cameraForward.Normalize();
 
-            // current rotation of character
-            Quaternion currentRotation = transform.rotation;
+            Vector3 cameraRight = mainCamera.transform.right;
+            cameraRight.y = 0f;
+            cameraRight.Normalize();
 
-            if (isMovementPressed) {
-                // creates new rotation based on where the player is pressing
-                Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
+            Vector3 moveDirection = (cameraForward * currentMovementInput.y + cameraRight * currentMovementInput.x).normalized;
 
-                // rotate the character to face posiyionToLookAt
-                transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFactorPerFrame * Time.deltaTime);
-            }  
+            if (isMovementPressed && moveDirection != Vector3.zero)
+            {
+                // Rotate the character to face the movement direction
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationFactorPerFrame * Time.deltaTime);
+            }
         }
-       
 
-        // handler function to set the player input values
         void onMovementInput(InputAction.CallbackContext context)
-
         {
             currentMovementInput = context.ReadValue<Vector2>();
-            currentMovement.x = currentMovementInput.x;
-            currentMovement.z = currentMovementInput.y;
-          
-            currentRunMovement.x = currentMovementInput.x * runMultiplier;
-            currentRunMovement.z = currentMovementInput.y * runMultiplier;
+
+            // Calculate the movement direction relative to the camera's forward direction
+            Vector3 cameraForward = mainCamera.transform.forward;
+            cameraForward.y = 0f; // Ensure it's horizontal
+            cameraForward.Normalize();
+
+            Vector3 cameraRight = mainCamera.transform.right;
+            cameraRight.y = 0f;
+            cameraRight.Normalize();
+
+            currentMovement = (cameraForward * currentMovementInput.y + cameraRight * currentMovementInput.x).normalized;
+
+            currentRunMovement.x = currentMovement.x * runMultiplier;
+            currentRunMovement.z = currentMovement.z * runMultiplier;
+
             isMovementPressed = currentMovementInput.x != 0 || currentMovementInput.y != 0;
         }
 
         void handleAnimation()
         {
-            // parameter values from animator
             bool isWalking = animator.GetBool(isWalkingHash);
             bool isRunning = animator.GetBool(isRunningHash);
 
-            if (isMovementPressed && !isWalking) {
+            if (isMovementPressed && !isWalking)
+            {
                 animator.SetBool(isWalkingHash, true);
             }
-
-            else if (!isMovementPressed && isWalking) {
+            else if (!isMovementPressed && isWalking)
+            {
                 animator.SetBool(isWalkingHash, false);
             }
 
@@ -138,8 +150,8 @@ namespace Platformer
             {
                 animator.SetBool(isRunningHash, true);
             }
-
-            else if ((!isMovementPressed || !isRunPressed) && isRunning) {
+            else if ((!isMovementPressed || !isRunPressed) && isRunning)
+            {
                 animator.SetBool(isRunningHash, false);
             }
         }
@@ -149,19 +161,21 @@ namespace Platformer
             bool isFalling = currentMovement.y <= 0.0f || !isJumpPressed;
             float fallMultiplier = 2.0f;
 
-            // apply gravity if player is grounded or not
-            if (characterController.isGrounded) {
+            if (characterController.isGrounded)
+            {
                 currentMovement.y = groundedGravity;
                 currentRunMovement.y = groundedGravity;
-
-            } else if (isFalling) {
+            }
+            else if (isFalling)
+            {
                 float previousYVelocity = currentMovement.y;
                 float newYVelocity = currentMovement.y + (gravity * fallMultiplier * Time.deltaTime);
                 float nextYVelocity = (previousYVelocity + newYVelocity) * .5f;
                 currentMovement.y = nextYVelocity;
                 currentRunMovement.y = nextYVelocity;
-
-            } else {
+            }
+            else
+            {
                 float previousYVelocity = currentMovement.y;
                 float newYVelocity = currentMovement.y + (gravity * Time.deltaTime);
                 float nextYVelocity = (previousYVelocity + newYVelocity) * .5f;
@@ -174,21 +188,21 @@ namespace Platformer
         {
             handleRotation();
             handleAnimation();
-            
-            if (isRunPressed) {
+
+            if (isRunPressed)
+            {
                 characterController.Move(currentRunMovement * Time.deltaTime);
-            } else {
+            }
+            else
+            {
                 characterController.Move(currentMovement * Time.deltaTime);
             }
             handleGravity();
             handleJump();
-
         }
-
 
         void OnEnable()
         {
-            // enable the character controls action map
             playerInput.CharacterControls.Enable();
         }
 
@@ -198,4 +212,3 @@ namespace Platformer
         }
     }
 }
-*/
