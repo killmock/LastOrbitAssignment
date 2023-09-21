@@ -21,16 +21,17 @@ namespace Platformer
         bool isRunPressed;
 
         float rotationFactorPerFrame = 10.0f;
-        float runMultiplier = 7.6f;
+        float runMultiplier = 8f;
+        float walkingSpeed = 4.0f;
         int zero = 0;
 
-        float gravity = -3f;
+        float gravity = -7f;
         float groundedGravity = -1.05f;
 
         bool isJumpPressed = false;
         float initialJumpVelocity;
-        float maxJumpHeight = 7.5f;
-        float maxJumpTime = 3.75f;
+        float maxJumpHeight = 10f;
+        float maxJumpTime = 4f;
         bool isJumping = false;
 
         private Camera mainCamera; // Reference to the main camera
@@ -53,8 +54,8 @@ namespace Platformer
             playerInput.CharacterControls.Jump.canceled += onJump;
 
             setupJumpVariables();
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
 
             mainCamera = Camera.main; // Assign the main camera reference
         }
@@ -126,8 +127,16 @@ namespace Platformer
 
             currentMovement = (cameraForward * currentMovementInput.y + cameraRight * currentMovementInput.x).normalized;
 
-            currentRunMovement.x = currentMovement.x * runMultiplier;
-            currentRunMovement.z = currentMovement.z * runMultiplier;
+            currentRunMovement.x = currentMovement.x  * runMultiplier;
+            currentRunMovement.z = currentMovement.z  * runMultiplier;
+
+            // Adjust walking speed (currentMovement) based on input
+            currentMovement.x = currentMovementInput.x * walkingSpeed; 
+            currentMovement.z = currentMovementInput.y * walkingSpeed; 
+
+            // Adjust running speed (currentRunMovement) based on input
+            // currentRunMovement.x = currentMovementInput.x * runMultiplier; // Keep the existing runMultiplier
+            // currentRunMovement.z = currentMovementInput.y * runMultiplier; // Keep the existing runMultiplier
 
             isMovementPressed = currentMovementInput.x != 0 || currentMovementInput.y != 0;
         }
@@ -159,7 +168,7 @@ namespace Platformer
         void handleGravity()
         {
             bool isFalling = currentMovement.y <= 0.0f || !isJumpPressed;
-            float fallMultiplier = 2.0f;
+            float fallMultiplier = 3.0f;
 
             if (characterController.isGrounded)
             {
