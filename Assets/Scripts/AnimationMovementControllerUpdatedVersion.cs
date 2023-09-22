@@ -30,7 +30,7 @@ namespace Platformer
 
         bool isJumpPressed = false;
         float initialJumpVelocity;
-        float maxJumpHeight = 7.5f;
+        float maxJumpHeight = 8f;
         float maxJumpTime = 3.75f;
         bool isJumping = false;
 
