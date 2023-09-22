@@ -29,19 +29,27 @@ namespace Platformer
                 }
             }
 
-            void Stop()
-            {
-                PauseMenuCanvas.SetActive(true);
-                    Time.timeScale = 0f;
-                Paused = true;
-            }
+        }
+        void Stop()
+        {
+            PauseMenuCanvas.SetActive(true);
+            Time.timeScale = 0f;
+            Paused = true;
+        }
 
-            void Play()
-            {
-                PauseMenuCanvas.SetActive(false);
-                    Time.timeScale = 1f;
-                Paused = false;
-            }
+        public void Play()
+        {
+            PauseMenuCanvas.SetActive(false);
+            Time.timeScale = 1f;
+            Paused = false;
+
+           
+        }
+
+        public void MainMenuButton()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
     }
+
 }
