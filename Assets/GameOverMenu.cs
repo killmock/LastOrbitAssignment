@@ -9,10 +9,14 @@ namespace Platformer
     {
         public GameObject gameOverScreen;
 
-        public void RestartGame()
+        public void Restart()
         {
-            // Reload the current scene to restart the game
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+
+        public void MainMenu()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
     }
 }

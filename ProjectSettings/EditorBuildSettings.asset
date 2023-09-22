@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LastOrbit.unity
     guid: 27605a4b804749d49839621d23a4e1c1
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 77c935e484601e648b1579f5ccf714c9
   m_configObjects: {}
