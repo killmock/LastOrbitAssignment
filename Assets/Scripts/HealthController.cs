@@ -26,8 +26,6 @@ namespace Platformer
             UpdateHealthText();
         }
 
-
-
         public void TakeDamage(float damage)
         {
             StartCoroutine(SmoothDecreaseHealth(damage));
@@ -65,17 +63,11 @@ namespace Platformer
 
         public void GainHealth(float healAmount)
         {
-          
             StartCoroutine(SmoothIncreaseHealth(healAmount));
-
         }
-
-
 
         private IEnumerator SmoothIncreaseHealth(float healAmount)
         {
-          
-
             float healingPerTick = healAmount / smoothDecreaseDuration;
             float elapsedTime = 0f;
            
@@ -83,6 +75,9 @@ namespace Platformer
             {
                 float currentHeal = healingPerTick * Time.deltaTime;
                 currentHealth += currentHeal;
+
+                currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth); // Clamp the health value between 0 and maxHealth.
+
                 elapsedTime += Time.deltaTime;
 
                 UpdateHealthText();
