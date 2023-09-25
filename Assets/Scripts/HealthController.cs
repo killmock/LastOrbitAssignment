@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 namespace Platformer
 {
@@ -43,7 +45,9 @@ namespace Platformer
                 if (currentHealth <= 0)
                 {
                     currentHealth = 0;
-                    //player death
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
                     break;
                 }
                 yield return null;
