@@ -13,10 +13,8 @@ namespace Platformer
         {
             if (other.CompareTag("Player"))
             {
-                
-                    healthController.GainHealth(healthAmount);
-
-            
+                healthController.GainHealth(healthAmount);
+                Destroy(gameObject);
             }
         }
     }
