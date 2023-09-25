@@ -12,11 +12,13 @@ namespace Platformer
     {
         [Header("Health Parameters")]
         [SerializeField] private float maxHealth = 100f;
-        private float currentHealth;
         [SerializeField] private float smoothDecreaseDuration = 0.5f;
+       
 
         [Header("UI Parameters")]
         [SerializeField] private TMP_Text healthText;
+
+        private float currentHealth = 100f;
 
         private void Start()
         {
@@ -24,9 +26,15 @@ namespace Platformer
             UpdateHealthText();
         }
 
+
+
         public void TakeDamage(float damage)
         {
             StartCoroutine(SmoothDecreaseHealth(damage));
+        }
+        void UpdateHealthText()
+        {
+            healthText.text = currentHealth.ToString("0");
         }
 
         private IEnumerator SmoothDecreaseHealth(float damage)
@@ -38,6 +46,7 @@ namespace Platformer
             {
                 float currentDamage = damagePerTick * Time.deltaTime;
                 currentHealth -= currentDamage;
+  
                 elapsedTime += Time.deltaTime;
 
                 UpdateHealthText();
@@ -54,9 +63,32 @@ namespace Platformer
             }
         }
 
-        void UpdateHealthText()
+        public void GainHealth(float healAmount)
         {
-            healthText.text = currentHealth.ToString("0");
+          
+            StartCoroutine(SmoothIncreaseHealth(healAmount));
+
+        }
+
+
+
+        private IEnumerator SmoothIncreaseHealth(float healAmount)
+        {
+          
+
+            float healingPerTick = healAmount / smoothDecreaseDuration;
+            float elapsedTime = 0f;
+           
+            while (elapsedTime < smoothDecreaseDuration)
+            {
+                float currentHeal = healingPerTick * Time.deltaTime;
+                currentHealth += currentHeal;
+                elapsedTime += Time.deltaTime;
+
+                UpdateHealthText();
+
+                yield return null;
+            }
         }
     }
 }

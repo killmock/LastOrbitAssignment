@@ -6,7 +6,7 @@ namespace Platformer
 {
     public class DamageController : MonoBehaviour
     {
-        [SerializeField] private float damage = 10f;
+        [SerializeField] private int damage = 10;
 
         [SerializeField] private HealthController healthController;
 
