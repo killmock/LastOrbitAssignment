@@ -5,16 +5,16 @@ using UnityEngine.SceneManagement;
 
 namespace Platformer
 {
-    public class GameOverMenu : MonoBehaviour
+    public class WinningScript : MonoBehaviour
     {
         public void Restart()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
         }
 
         public void MainMenu()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 3);
         }
     }
 }
