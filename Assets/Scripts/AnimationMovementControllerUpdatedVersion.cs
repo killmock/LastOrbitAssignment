@@ -22,7 +22,7 @@ namespace Platformer
 
         //float rotationFactorPerFrame = 10.0f;
         float runMultiplier = 7.6f;
-        float walkingSpeed = 4.0f;
+        public float walkingSpeed = 4.0f;
         
 
         float gravity = -3f;
