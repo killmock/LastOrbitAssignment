@@ -45,5 +45,10 @@ namespace Platformer
             timerText.text = currentTime.ToString("0.0");
         }
 
+        public void AddTime(float timeToAdd)
+        {
+            currentTime += timeToAdd;
+            SetTimerText();
+        }
     }
 }
