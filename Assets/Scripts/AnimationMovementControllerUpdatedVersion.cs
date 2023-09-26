@@ -20,10 +20,10 @@ namespace Platformer
         bool isMovementPressed;
         bool isRunPressed;
 
-        float rotationFactorPerFrame = 10.0f;
+        //float rotationFactorPerFrame = 10.0f;
         float runMultiplier = 7.6f;
         float walkingSpeed = 4.0f;
-        int zero = 0;
+        
 
         float gravity = -3f;
         float groundedGravity = -1.05f;
