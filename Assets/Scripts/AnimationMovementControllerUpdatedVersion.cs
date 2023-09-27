@@ -21,8 +21,8 @@ namespace Platformer
         bool isRunPressed;
 
         //float rotationFactorPerFrame = 10.0f;
-        float runMultiplier = 7.6f;
-        public float walkingSpeed = 4.0f;
+        float runMultiplier = 2.0f;
+        float walkingSpeed = 4.0f;
         
 
         float gravity = -3f;
@@ -103,7 +103,7 @@ namespace Platformer
                 cameraForward.Normalize();
 
                 // Calculate the input direction relative to the camera
-                Vector3 inputRelativeToCamera = Quaternion.LookRotation(cameraForward) * moveDirection;
+                Vector3 inputRelativeToCamera = Quaternion.LookRotation(cameraForward) * moveDirection * walkingSpeed;
 
                 // Use the input relative to the camera for character movement
                 currentMovement.x = inputRelativeToCamera.x;
@@ -111,7 +111,7 @@ namespace Platformer
 
                 // Calculate the rotation angle based on the movement direction
                 float targetRotationAngle = Mathf.Atan2(inputRelativeToCamera.x, inputRelativeToCamera.z) * Mathf.Rad2Deg;
-                float rotationSpeed = 10.0f; // Adjust the rotation speed as needed
+                float rotationSpeed = 8.0f; // Adjust the rotation speed as needed
 
                 // Smoothly rotate the character towards the target rotation angle
                 Quaternion targetRotation = Quaternion.Euler(0, targetRotationAngle, 0);
