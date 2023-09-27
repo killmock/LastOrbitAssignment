@@ -127,6 +127,7 @@ namespace Platformer
             // Use the transformed moveDirection for character movement
             currentRunMovement.x = currentMovement.x * runMultiplier;
             currentRunMovement.z = currentMovement.z * runMultiplier;
+          
         }
 
         // handler function to set the player input values
