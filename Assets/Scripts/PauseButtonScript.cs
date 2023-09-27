@@ -19,7 +19,7 @@ namespace Platformer
         {
             if(Input.GetKeyDown(KeyCode.Escape))
             {
-                if(Paused)
+                if (Paused)
                 {
                     Play();
                 }
@@ -28,7 +28,6 @@ namespace Platformer
                     Stop();
                 }
             }
-
         }
         void Stop()
         {
