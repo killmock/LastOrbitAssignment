@@ -54,8 +54,8 @@ namespace Platformer
             playerInput.CharacterControls.Jump.canceled += onJump;
 
             setupJumpVariables();
-            //Cursor.lockState = CursorLockMode.Locked;
-            //Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         void setupJumpVariables()

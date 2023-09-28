@@ -9,12 +9,14 @@ namespace Platformer
     {
         public static bool Paused = false;
         public GameObject PauseMenuCanvas;
+
         void Start()
         {
             Time.timeScale = 1f;
-        
+
         }
 
+        
         void Update()
         {
             if(Input.GetKeyDown(KeyCode.Escape))
@@ -29,11 +31,16 @@ namespace Platformer
                 }
             }
         }
+
+
         void Stop()
         {
             PauseMenuCanvas.SetActive(true);
             Time.timeScale = 0f;
             Paused = true;
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         public void Play()
@@ -42,7 +49,8 @@ namespace Platformer
             Time.timeScale = 1f;
             Paused = false;
 
-           
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         public void MainMenuButton()
